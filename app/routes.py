@@ -1,5 +1,4 @@
-import json
-import bson
+
 from bson.json_util import dumps
 import jwt
 from flask import request
@@ -12,24 +11,6 @@ from app import app
 # log user in
 
 jwt_secret = "top secret secret"
-users = [
-    {
-        'name': 'John',
-        'email': 'John@John.com',
-        'password': 'password'
-    },
-    {
-        'name': 'Ako',
-        'email': 'Ako@Ako.com',
-        'password': 'password'
-    },
-    {
-        'name': 'Ivo',
-        'email': 'Ivo@Ivo.com',
-        'password': 'password'
-    }
-]
-
 
 @app.route('/get-users')
 def get_users():
@@ -53,7 +34,7 @@ def login():
     username = body["name"]
     password = body["password"]
     db_user = models.getUser(username)
-    if db_user == None or  not check_password_hash(db_user['password'], password):
+    if db_user == None or not check_password_hash(db_user['password'], password):
         return "Your credentials have been rejected"
     return make_jwt(username)
 
