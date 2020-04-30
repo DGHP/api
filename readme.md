@@ -1,5 +1,34 @@
-# tentative schema
+# DGHP api
+Written in Python 3 with MongoDB, both of which need to be installed if they are not already.
 
+## Local deployment
+
+
+Setup is pretty standard for a python project:
+
+```
+git clone https://github.com/DGHP/api.git
+cd api
+python3 -m venv venv
+source venv/activate/bin
+pip install -r requirements.txt
+touch .flaskenv
+```
+
+Edit .flaskenv with editor of choice. 
+
+Finally,
+
+```
+flask run
+```
+
+
+
+## Endpoints
+
+
+## Old planned schema
 paste this content into https://ondras.zarovi.cz/sql/demo/
 
 If you make changes, you have to update the xml below
