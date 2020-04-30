@@ -1,9 +1,12 @@
 import json
+import bson
+from bson.json_util import dumps
 import jwt
 from flask import request
 from werkzeug.security import generate_password_hash, check_password_hash
 from time import time
 
+from app import models # camelcase bad
 from app import app
 # create user
 # log user in
@@ -30,8 +33,7 @@ users = [
 
 @app.route('/get-users')
 def get_users():
-    print(time())
-    return json.dumps(users)
+    return dumps(models.getFromDatabase())
 
 
 @app.route('/add-user', methods=["POST"])
@@ -39,20 +41,21 @@ def add_user():
     user_dictionary = request.get_json()
     user_dictionary['password'] = generate_password_hash(
         user_dictionary['password'])
-    users.append(request.get_json())
+    # users.append(request.get_json())
+    models.addUser(user_dictionary)
     username = user_dictionary['name']
     return make_jwt(username)
 
 
-@app.route('/login', methods=["PUT"])
+@app.route('/login', methods=["POST"])
 def login():
     body = request.get_json()
     username = body["name"]
     password = body["password"]
-    for u in users:
-        if u['name'] == username and check_password_hash(u['password'], password):
-            return make_jwt(username) 
-    return "Your credentials have been rejected"
+    db_user = models.getUser(username)
+    if db_user == None or  not check_password_hash(db_user['password'], password):
+        return "Your credentials have been rejected"
+    return make_jwt(username)
 
 
 @app.route('/make-change', methods=['POST'])
