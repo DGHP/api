@@ -1,4 +1,5 @@
 import json
+import jwt
 from flask import request
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -6,6 +7,7 @@ from app import app
 # create user
 # log user in
 
+jwt_secret="top secret secret"
 users = [
     {
         'name': 'John',
@@ -43,8 +45,8 @@ def login():
     password = body["password"]
     for u in users:
         if u['name'] == username and check_password_hash(u['password'], password):
-            return "True"
-    return "False" # return JWT
+            return jwt.encode({'username': username, 'password': password}, jwt_secret, algorithm="HS256")
+    return "Your credentials have been rejected" # return JWT
 
 # @app.route('verify-jwt')
 # def verify():
