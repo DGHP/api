@@ -45,9 +45,14 @@ def login():
     password = body["password"]
     for u in users:
         if u['name'] == username and check_password_hash(u['password'], password):
-            return jwt.encode({'username': username, 'password': password}, jwt_secret, algorithm="HS256")
+            return jwt.encode({'username': username}, jwt_secret, algorithm="HS256")
     return "Your credentials have been rejected" # return JWT
 
+@app.route('/make-change', methods=['POST'])
+def do_something():
+    body = request.get_data()
+    credentials = jwt.decode(body, jwt_secret, algorithms=['HS256'])
+    return credentials
 # @app.route('verify-jwt')
 # def verify():
 
