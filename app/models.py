@@ -1,6 +1,4 @@
 from app import db
-import datetime
-
 
 users = db.users
 # users.drop()
@@ -22,4 +20,6 @@ def addUser(user):
 def getUser(username):
     return users.find_one({'name': username})
 
-
+def createGame(game):
+    games.insert_one(game)
+    print(games.find_one())

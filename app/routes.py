@@ -56,3 +56,15 @@ def check_jwt(payload):
         return jwt.decode(payload, jwt_secret, algorithms=['HS256'])
     except jwt.exceptions.InvalidSignatureError:
         return "token is invalid"
+
+
+@app.route('/game', methods=["POST"])
+def create_game():
+    body = request.get_data()
+    print(body)
+    # payload_user = jwt.decode(request.get_data(), jwt_secret, algorithms=['HS256'])
+    # print(payload_user)
+    game = request.get_json()
+    # game['players'] = jw
+    models.createGame(game)
+    return "new game created"
