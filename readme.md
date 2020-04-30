@@ -1,5 +1,5 @@
 # DGHP api
-Written in Python 3 with MongoDB, both of which need to be installed if they are not already.
+Written in Python 3 with MongoDB, both of which need to be installed if they are not already. The default Ubuntu Python installation needs some updating. For instance, you may need to install pip3.
 
 ## Local deployment
 
@@ -11,7 +11,7 @@ git clone https://github.com/DGHP/api.git
 cd api
 python3 -m venv venv
 source venv/activate/bin
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 touch .flaskenv
 ```
 
