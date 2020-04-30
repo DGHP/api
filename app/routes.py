@@ -58,7 +58,7 @@ def login():
 @app.route('/make-change', methods=['POST'])
 def do_something():
     body = request.get_data()
-    credentials = jwt.decode(body, jwt_secret, algorithms=['HS256'])
+    credentials =  check_jwt(body)
     return credentials
 
 
@@ -66,3 +66,9 @@ def make_jwt(username):
     now = int(time())
     week_later = now + 604800
     return jwt.encode({'username': username, 'iat': now, 'exp': week_later}, jwt_secret, algorithm="HS256")
+
+def check_jwt(payload):
+    try: 
+        return jwt.decode(payload, jwt_secret, algorithms=['HS256'])
+    except jwt.exceptions.InvalidSignatureError:
+        return "token is invalid"
