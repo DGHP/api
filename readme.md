@@ -9,7 +9,7 @@ our API has several endpoints.
 ---
 
 `GET` - `/districts`
-> Get all the dsitricts
+> Get all the dsitricts. No authrisation needed.
 
 ```json
 [
@@ -35,7 +35,7 @@ our API has several endpoints.
 ```
 
 `GET` - `/characters`
-> get all the cahracters
+> get all the cahracters.No authrisation needed.
 
 ```json
 [
