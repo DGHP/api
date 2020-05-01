@@ -154,6 +154,9 @@ This request sends a response:
 	]
 }
 ```
+#### game phases
+
+* gathering resources. choose either 2 gold or a district card
 
 `PUT` - `/games/fac19/monkey?gold&amount=2`
 > Update players gold amount for a player
@@ -161,13 +164,15 @@ This request sends a response:
 `PUT` - `/games/fac19/monkey?districtinhand&distname=shop`
 > Update the district name held in hand for a player
 
+* Building phase
+
 `PUT` - `/games/fac19/monkey?districtsbuilt&distname=museum`
 > Update the districts that are built for a player
 
 `PUT` - `/games/fac19/monkey?totalpoints&amount=5`
 > Update the total points for a player
 
-
+#### Delete routes
 `DELETE` - `/games?name=19`
 > Delete the game. authorisation needed. no body required
 
