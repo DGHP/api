@@ -6,7 +6,7 @@ games = db.games
 
 
 def getFromDatabase():
-    print(db.list_collection_names())
+    # print(db.list_collection_names())
     results = db.users.find()
     return_value = []
     for res in results:
@@ -22,4 +22,5 @@ def getUser(username):
 
 def createGame(game):
     games.insert_one(game)
-    print(games.find_one())
+    # print(games.find_one())
+
