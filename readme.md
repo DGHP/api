@@ -3,11 +3,13 @@ Written in Python 3 with MongoDB, both of which need to be installed if they are
 
 ## Local deployment
 
-Setup is pretty standard for a python project:
+Setup is pretty standard for a python/mongo project
 
 ```
 git clone https://github.com/DGHP/api.git
 cd api
+sudo systemctl start mongod
+sudo systemctl status mongod (you want to see a green arrow)
 python3 -m venv venv
 source venv/activate/bin
 pip3 install -r requirements.txt
@@ -139,7 +141,7 @@ This request sends a response:
 }
 ```
 
-`PUT` - `/games?fac19`
+`PUT` - `/games?name=fac19&username=ivo`
 
 > join the game named fac19 after getting the link from game creator. Authorisation needed. No response body requred. The playerUsernames will automatically get updated.
 ---
