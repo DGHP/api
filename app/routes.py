@@ -48,17 +48,6 @@ def do_something(): # just to test check_jwt function
     return credentials
 
 
-def make_jwt(username):
-    now = int(time())
-    week_later = now + 604800
-    return jwt.encode({'username': username, 'iat': now, 'exp': week_later}, jwt_secret, algorithm="HS256")
-
-def check_jwt(payload):
-    try: 
-        return jwt.decode(payload, jwt_secret, algorithms=['HS256'])
-    except jwt.exceptions.InvalidSignatureError:
-        return "token is invalid"
-
 
 @app.route('/games', methods=["POST"])
 def create_game():
@@ -82,4 +71,18 @@ def route_games_put(): # example of a good request: http://127.0.0.1:5000/games?
             return "User added"
         return "Could not find username field"
     return "could not find game name field"
+
 # this function is currently for adding a user to a game, but it could turn into a router for different kinds of put requests.
+
+
+
+def make_jwt(username):
+    now = int(time())
+    week_later = now + 604800
+    return jwt.encode({'username': username, 'iat': now, 'exp': week_later}, jwt_secret, algorithm="HS256")
+
+def check_jwt(payload):
+    try: 
+        return jwt.decode(payload, jwt_secret, algorithms=['HS256'])
+    except jwt.exceptions.InvalidSignatureError:
+        return "token is invalid"

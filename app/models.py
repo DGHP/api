@@ -1,7 +1,5 @@
 from app import db
 
-from pprint import pprint
-
 users = db.users
 # users.drop()
 games = db.games
@@ -27,7 +25,6 @@ def getUser(username):
 
 def createGame(game):
     games.insert_one(game)
-    # pprint(games.find_one())
 
 def addUser(game, user):
     games.update({'name': game}, {'$push': {'players': user}})
