@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from time import time
 
 from app import models # camelcase bad
+from app.factories.newgame import new_game
 from app import app
 # create user
 # log user in
@@ -14,7 +15,7 @@ jwt_secret = "top secret secret"
 
 @app.route('/get-users')
 def get_users():
-    return dumps(models.getFromDatabase())
+    return dumps(models.getFromDatabase(collection="users"))
 
 
 @app.route('/add-user', methods=["POST"])
@@ -60,12 +61,16 @@ def check_jwt(payload):
 
 @app.route('/games', methods=["POST"])
 def create_game():
-    body = request.get_data()
-    print(body)
-    # payload_user = jwt.decode(request.get_data(), jwt_secret, algorithms=['HS256'])
-    # print(payload_user)
-    game = request.get_json()
-    # game['players'] = jw
+    body = request.get_json()
+    game = new_game(name=body['name'], players=body['playerCount'], mode=body['mode'], first_player=body['playerUsernames'][0])
     models.createGame(game)
     return "new game created"
 
+@app.route('/games', methods=['GET'])
+def get_games():
+    return dumps(models.getFromDatabase(collection="games"))
+
+
+
+# @app.route('/games')
+# def get_all_games():
