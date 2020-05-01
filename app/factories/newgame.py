@@ -1,7 +1,7 @@
 from app.factories.player import player_factory
 
 def new_game(name, players, mode, first_player):
-    print(player_factory(first_player))
+    # print(player_factory(first_player))
     return {
         'name': name,
         'playerCount': players,

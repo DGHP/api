@@ -9,7 +9,7 @@ games.drop()
 
 
 def getFromDatabase(collection): # right now returns password - good for debugging but not for production. TBH this whole route is probably like that
-    print(db.list_collection_names())
+    # print(db.list_collection_names())
     if collection == "games":
         results = db.games.find()
     else:
@@ -28,3 +28,7 @@ def getUser(username):
 def createGame(game):
     games.insert_one(game)
     # pprint(games.find_one())
+
+def addUser(game, user):
+    games.update({'name': game}, {'$push': {'players': user}})
+    # print(db.games.find_one({'name': game}))

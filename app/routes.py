@@ -7,6 +7,7 @@ from time import time
 
 from app import models # camelcase bad
 from app.factories.newgame import new_game
+from app.factories.player import player_factory
 from app import app
 # create user
 # log user in
@@ -41,7 +42,7 @@ def login():
 
 
 @app.route('/make-change', methods=['POST'])
-def do_something():
+def do_something(): # just to test check_jwt function
     body = request.get_data()
     credentials =  check_jwt(body)
     return credentials
@@ -70,7 +71,15 @@ def create_game():
 def get_games():
     return dumps(models.getFromDatabase(collection="games"))
 
-
-
-# @app.route('/games')
-# def get_all_games():
+@app.route('/games', methods=['PUT'])
+def route_games_put(): # example of a good request: http://127.0.0.1:5000/games?name=fac19&username=ivo
+    game = request.args.get('name')
+    if game:
+        user = request.args.get('username')
+        if user:
+            player_dict = player_factory(user)
+            models.addUser(game=game, user=player_dict)
+            return "User added"
+        return "Could not find username field"
+    return "could not find game name field"
+# this function is currently for adding a user to a game, but it could turn into a router for different kinds of put requests.
