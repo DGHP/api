@@ -1,3 +1,176 @@
+# API Documentation
+
+our API has several endpoints. 
+
+`GET` - `/users`
+
+> get all users from db. No authorisation needed.
+
+---
+
+`GET` - `/districts`
+> Get all the dsitricts
+
+```json
+[
+	castel: {
+		count: 5,
+		type: "noble",
+		cost: 4,
+		extra: ""
+	},
+	museum: {
+		count: 1,
+		type: "unique",
+		cost: 2,
+		extra: "When musem gets build it can be build by any gold and is worth of double the amount"
+	},
+	statue: {
+		count: 1,
+		type: "unique",
+		cost: 5,
+		extra: "You can build same districts in your city"
+	}
+]
+```
+
+`GET` - `/characters`
+> get all the cahracters
+
+```json
+[
+	assasin: {
+		orderNumber: 1,
+		power: "Kill acharcter"
+	}, 
+	thief: {
+		orderNumber: 2,
+		power: "Choose a character to steal money from"
+	},
+	magicion: {
+		orderNumber: 3,
+		power: "chooses a character to swap hands with"
+	}
+]
+```
+
+---
+
+`POST` - `/users`
+
+> create a new user in the database.no authorisation needed. It return a token as a response that contains information about the username. body:
+
+```json
+{
+	username: "monkey",
+	email: "mon@mon.com",
+	password: "123"
+}
+```
+
+---
+
+`POST` - `/login`
+
+> login in your account. the response return a JWT token. body:
+
+```json
+{
+	username: "monkey",
+	password: "123"
+}
+```
+
+---
+
+`POST` - `/games`
+
+> Create a new game. Authentication needed. body:
+
+```json
+{
+	name: "fac19",
+	playerCount: "8",
+	mode: "original",
+	playerUsernames: ["monkey"]
+}
+```
+
+This request sends a response:
+
+```json
+{
+	name: "fac19",
+	playerCount: "8",
+	mode: "original",
+	playerUsernames: [
+		{monkey: {
+			districtsInHand: ["trade mill", "castel", "museum", "statue"],
+			goldCount: 2,
+			districtsBuilt: [],
+			characterRole: "",
+			totalPoints: 0
+		}}
+	]
+}
+```
+
+`PUT` - `/games?fac19`
+
+> join the game named fac19 after getting the link from game creator. Authorisation needed. No response pody requred. The playerUsernames will automatically get updated.
+---
+
+`GET` - `/games/fac19`
+
+> get the global state of the game bofore game starts.
+
+```json
+{
+	name: "fac19",
+	playerCount: "8",
+	mode: "original",
+	playerUsernames: [
+		{monkey: {
+			districtsInHand: ["fortress", "castel", "museum", "graveyeard"],
+			goldCount: 2,
+			districtsBuilt: [],
+			characterRole: "",
+			totalPoints: 0
+		}},
+		{ivo: {
+			districtsInHand: ["jail", "castel", "church", "statue"],
+			goldCount: 2,
+			districtsBuilt: [],
+			characterRole: "",
+			totalPoints: 0
+		}},
+		{ako: {
+			districtsInHand: ["trade mill", "castel", "museum", "statue"],
+			goldCount: 2,
+			districtsBuilt: [],
+			characterRole: "",
+			totalPoints: 0
+		}}
+	]
+}
+```
+
+`PUT` - `/games/fac19/monkey?gold&amount=2`
+> Update players gold amount for a player
+
+`PUT` - `/games/fac19/monkey?districtinhand&distname=shop`
+> Update the district name held in hand for a player
+
+`PUT` - `/games/fac19/monkey?districtsbuilt&distname=museum`
+> Update the districts that are built for a player
+
+`PUT` - `/games/fac19/monkey?totalpoints&amount=5`
+> Update the total points for a player
+
+
+`DELETE` - `/games?name=19`
+> Delete the game. authorisation needed. no body required
+
 # tentative schema
 
 paste this content into https://ondras.zarovi.cz/sql/demo/

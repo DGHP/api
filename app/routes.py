@@ -58,7 +58,7 @@ def check_jwt(payload):
         return "token is invalid"
 
 
-@app.route('/game', methods=["POST"])
+@app.route('/games', methods=["POST"])
 def create_game():
     body = request.get_data()
     print(body)
@@ -68,3 +68,4 @@ def create_game():
     # game['players'] = jw
     models.createGame(game)
     return "new game created"
+
