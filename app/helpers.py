@@ -39,3 +39,4 @@ def make_jwt(username):
     token = jwt.encode({'username': username, 'iat': now,
                         'exp': week_later}, jwt_secret, algorithm="HS256")
     return token
+

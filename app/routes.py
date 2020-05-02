@@ -1,7 +1,7 @@
 from bson.json_util import dumps
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from flask import request
+from flask import request, make_response
 
 from app import app, models
 from app.helpers import token_required, make_jwt
@@ -11,7 +11,9 @@ from app.factories.player import player_factory
 
 @app.route('/users', methods=["GET"])
 def get_users():
-    return dumps(models.get_from_database(collection="users"))
+    data = dumps(models.get_from_database(collection="users"))
+    res = make_response(data, 200, {'content-type': 'application/json'})
+    return res
 
 
 @app.route('/users', methods=["POST"])
@@ -21,7 +23,9 @@ def add_user():
         user['password'])
     models.add_user(user)
     username = user['username']
-    return make_jwt(username)
+    token = {"token": make_jwt(username)}
+    res = make_response(token, 200, {'content-type': 'application/json'})
+    return res
 
 
 @app.route('/login', methods=["POST"])
