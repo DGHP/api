@@ -18,7 +18,9 @@ def get_users():
 
 @app.route('/users', methods=["POST"])
 def add_user():
-    message = request.get_json()
+    user = validate_message(request.get_json(), 'username', 'password')
+    if not user: 
+        return "Your request body must contain username and password fields"
     user['password'] = generate_password_hash(
         user['password'])
     models.add_user(user)
@@ -44,7 +46,9 @@ def login():
 @app.route('/games', methods=["POST"])
 @token_required
 def create_game(current_user):
-    print(current_user)
+    game = validate_message(request.get_json(), 'gameName', 'playerCount', 'mode', 'playerUsernames')
+    if not game: 
+        return "Your request body must contain username and password fields"
     body = request.get_json()
     game = new_game_factory(game_name=body['gameName'], player_count=body['playerCount'],
                             mode=body['mode'], first_player=current_user['username'])
