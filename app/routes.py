@@ -8,6 +8,7 @@ from app.helpers import token_required, make_jwt
 from app.factories.newgame import new_game_factory
 from app.factories.player import player_factory
 
+
 @app.route('/users', methods=["GET"])
 def get_users():
     return dumps(models.get_from_database(collection="users"))
@@ -39,17 +40,21 @@ def login():
 def create_game(current_user):
     print(current_user)
     body = request.get_json()
-    game = new_game_factory(name=body['name'], players=body['playerCount'], mode=body['mode'], first_player=body['playerUsernames'][0])
+    game = new_game_factory(name=body['name'], players=body['playerCount'],
+                            mode=body['mode'], first_player=body['playerUsernames'][0])
     models.create_game(game)
     return "new game created"
+
 
 @app.route('/games', methods=['GET'])
 def get_games():
     return dumps(models.get_from_database(collection="games"))
 
+
 @app.route('/games', methods=['PUT'])
 @token_required
-def route_games_put(current_user): # example of a good request: http://127.0.0.1:5000/games?name=fac19&username=ivo
+# example of a good request: http://127.0.0.1:5000/games?name=fac19&username=ivo
+def route_games_put(current_user):
     game = request.args.get('name')
     if game:
         user = request.args.get('username')
@@ -61,6 +66,4 @@ def route_games_put(current_user): # example of a good request: http://127.0.0.1
     return "could not find game name field"
 
 # this function is currently for adding a user to a game, but it could turn into a router for different kinds of put requests.
-
-
 
