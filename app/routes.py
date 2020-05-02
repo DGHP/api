@@ -1,12 +1,12 @@
 from bson.json_util import dumps
+
 from flask import request
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from app import app, models
 from app.helpers import token_required, make_jwt
-from app import models
 from app.factories.newgame import new_game_factory
 from app.factories.player import player_factory
-from app import app
 
 @app.route('/users', methods=["GET"])
 def get_users():

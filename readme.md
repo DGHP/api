@@ -100,7 +100,7 @@ Auth required: no
 
 Gets all games, returned as array in body.
 
-Example body:
+Example response body:
 ```
 [
     {

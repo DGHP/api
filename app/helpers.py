@@ -1,9 +1,11 @@
 
-from flask import request, jsonify
-import jwt
-from functools import wraps
-from app.models import get_user
 from time import time
+
+from flask import request, jsonify
+from functools import wraps
+import jwt
+
+from app.models import get_user
 
 jwt_secret = "top secret secret"
 
