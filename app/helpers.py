@@ -2,7 +2,8 @@
 from flask import request, jsonify
 import jwt
 from functools import wraps
-from app.models import getUser
+from app.models import get_user
+from time import time
 
 jwt_secret = "top secret secret"
 
@@ -20,10 +21,17 @@ def token_required(f):
   
         try:
             data = jwt.decode(token, jwt_secret, algorithm="HS256")
-            current_user = getUser(data['username'])
+            current_user = get_user(data['username'])
         except:
             return jsonify({'message': 'token is invalid'})
 
         return f(current_user, *args, **kwargs)
 
     return decorator
+
+
+def make_jwt(username):
+    now = int(time())
+    week_later = now + 604800
+    token = jwt.encode({'username': username, 'iat': now, 'exp': week_later}, jwt_secret, algorithm="HS256")
+    return token
