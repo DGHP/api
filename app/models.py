@@ -1,7 +1,7 @@
 from app import db
 
 users = db.users
-# users.drop()
+users.drop()
 
 games = db.games
 # games.drop()
