@@ -20,7 +20,7 @@ def get_users():
 def add_user():
     user = validate_message(request.get_json(), 'username', 'password')
     if not user: 
-        return "Your request body must contain username and password fields"
+        return make_response("Your request body must contain username and password fields", 400)
     user['password'] = generate_password_hash(
         user['password'])
     models.add_user(user)
@@ -48,7 +48,7 @@ def login():
 def create_game(current_user):
     game = validate_message(request.get_json(), 'gameName', 'playerCount', 'mode', 'playerUsernames')
     if not game: 
-        return "Your request body must contain username and password fields"
+        return make_response("Your request body must contain gameName, playerCount, mode and playerUsernames fields", 400)
     body = request.get_json()
     game = new_game_factory(game_name=body['gameName'], player_count=body['playerCount'],
                             mode=body['mode'], first_player=current_user['username'])
