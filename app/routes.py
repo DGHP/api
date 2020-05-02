@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from app.helpers import token_required, make_jwt
 from app import models # camelcase bad
-from app.factories.newgame import new_game
+from app.factories.newgame import new_game_factory
 from app.factories.player import player_factory
 from app import app
 
@@ -39,7 +39,7 @@ def login():
 def create_game(current_user):
     print(current_user)
     body = request.get_json()
-    game = new_game(name=body['name'], players=body['playerCount'], mode=body['mode'], first_player=body['playerUsernames'][0])
+    game = new_game_factory(name=body['name'], players=body['playerCount'], mode=body['mode'], first_player=body['playerUsernames'][0])
     models.create_game(game)
     return "new game created"
 
