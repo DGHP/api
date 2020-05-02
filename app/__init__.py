@@ -11,7 +11,7 @@ CORS(app)
 if not os.getenv('MONGODB_URI'):
   db = client.dev_database
 else:
-  db = client
+  db = client.production_database
 print(db)
 
 from app import routes
