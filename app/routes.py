@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask import request, make_response
 
 from app import app, models
-from app.helpers import token_required, make_jwt
+from app.helpers import token_required, make_jwt, validate_message
 from app.factories.newgame import new_game_factory
 from app.factories.player import player_factory
 
@@ -18,12 +18,12 @@ def get_users():
 
 @app.route('/users', methods=["POST"])
 def add_user():
-    user = request.get_json()
+    message = request.get_json()
     user['password'] = generate_password_hash(
         user['password'])
     models.add_user(user)
     username = user['username']
-    token = {"token": make_jwt(username).decode()} # decode converts bites into string
+    token = {"token": make_jwt(username).decode()} # decode converts bites into string # but why?
     res = make_response(token, 200, {'content-type': 'application/json'})
     return res
 
