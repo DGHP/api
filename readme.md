@@ -9,7 +9,7 @@ Setup is pretty standard for a python/mongo project. On Ubuntu, follow this set 
 git clone https://github.com/DGHP/api.git
 cd api
 sudo systemctl start mongod
-sudo systemctl status mongod (you want to see a green arrow)
+sudo systemctl status mongod (you want to see a green circle - press q to exit)
 python3 -m venv venv
 source venv/activate/bin
 pip3 install -r requirements.txt
