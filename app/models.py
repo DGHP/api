@@ -20,13 +20,13 @@ def add_user(user):
 
 
 def get_user(username):
-    return users.find_one({'name': username})
+    return users.find_one({'username': username})
 
 
 def create_game(game):
     games.insert_one(game)
 
 
-def add_user_to_game(game, user):
-    games.update_one({'name': game}, {'$push': {'players': user}})
+def add_user_to_game(game_name, user):
+    games.update_one({'gameName': game_name}, {'$push': {'players': user}})
     # print(db.games.find_one({'name': game}))

@@ -1,5 +1,5 @@
-def player_factory(name):
-    return {name: {
+def player_factory(username):
+    return {username: {
         'districtsInHand': [],
         'goldCount': 2,
         'districtsBuilt': [],

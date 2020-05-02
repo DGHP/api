@@ -1,7 +1,7 @@
 from bson.json_util import dumps
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from flask import request
-from werkzeug.security import generate_password_hash, check_password_hash
 
 from app import app, models
 from app.helpers import token_required, make_jwt
@@ -16,11 +16,11 @@ def get_users():
 
 @app.route('/users', methods=["POST"])
 def add_user():
-    user_dictionary = request.get_json()
-    user_dictionary['password'] = generate_password_hash(
-        user_dictionary['password'])
-    models.add_user(user_dictionary)
-    username = user_dictionary['name']
+    user = request.get_json()
+    user['password'] = generate_password_hash(
+        user['password'])
+    models.add_user(user)
+    username = user['username']
     return make_jwt(username)
 
 
@@ -40,7 +40,7 @@ def login():
 def create_game(current_user):
     print(current_user)
     body = request.get_json()
-    game = new_game_factory(name=body['name'], players=body['playerCount'],
+    game = new_game_factory(game_name=body['gameName'], player_count=body['playerCount'],
                             mode=body['mode'], first_player=body['playerUsernames'][0])
     models.create_game(game)
     return "new game created"
@@ -55,12 +55,12 @@ def get_games():
 @token_required
 # example of a good request: http://127.0.0.1:5000/games?name=fac19&username=ivo
 def route_games_put(current_user):
-    game = request.args.get('name')
-    if game:
+    game_name = request.args.get('gamename')
+    if game_name:
         user = request.args.get('username')
         if user:
             player_dict = player_factory(user)
-            models.add_user_to_game(game=game, user=player_dict)
+            models.add_user_to_game(game_name=game_name, user=player_dict)
             return "User added"
         return "Could not find username field"
     return "could not find game name field"

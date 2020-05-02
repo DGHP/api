@@ -1,10 +1,10 @@
 from app.factories.player import player_factory
 
 
-def new_game_factory(name, players, mode, first_player):
+def new_game_factory(game_name, player_count, mode, first_player):
     return {
-        'name': name,
-        'playerCount': players,
+        'gameName': game_name,
+        'playerCount': player_count,
         'mode': mode,
         'characterDeck': [],
         'districtDeck': [],
