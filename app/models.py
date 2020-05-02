@@ -2,9 +2,9 @@ from app import db
 
 users = db.users
 # users.drop()
+
 games = db.games
 # games.drop()
-
 
 # right now returns password - good for debugging but not for production. TBH this whole route is probably like that
 def get_from_database(collection):
@@ -29,4 +29,4 @@ def create_game(game):
 
 def add_user_to_game(game_name, user):
     games.update_one({'gameName': game_name}, {'$push': {'players': user}})
-    # print(db.games.find_one({'name': game}))
+    print(db.games.find_one({'gameName': game_name}))

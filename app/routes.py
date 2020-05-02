@@ -23,7 +23,7 @@ def add_user():
         user['password'])
     models.add_user(user)
     username = user['username']
-    token = {"token": make_jwt(username)}
+    token = {"token": make_jwt(username).decode()} # decode converts bites into string
     res = make_response(token, 200, {'content-type': 'application/json'})
     return res
 
@@ -36,7 +36,9 @@ def login():
     db_user = models.get_user(username)
     if db_user == None or not check_password_hash(db_user['password'], password):
         return "Your credentials have been rejected"
-    return make_jwt(username)
+    token = {"token": make_jwt(username).decode()} # decode converts bites into string
+    res = make_response(token, 200, {'content-type': 'application/json'})
+    return res
 
 
 @app.route('/games', methods=["POST"])
@@ -45,23 +47,25 @@ def create_game(current_user):
     print(current_user)
     body = request.get_json()
     game = new_game_factory(game_name=body['gameName'], player_count=body['playerCount'],
-                            mode=body['mode'], first_player=body['playerUsernames'][0])
+                            mode=body['mode'], first_player=current_user['username'])
     models.create_game(game)
-    return "new game created"
+    return {"message":"new game created"}
 
 
 @app.route('/games', methods=['GET'])
 def get_games():
-    return dumps(models.get_from_database(collection="games"))
+    data = dumps(models.get_from_database(collection="games"))
+    res = make_response(data, 200 , {"content-type": "application/json"})
+    return res 
 
 
 @app.route('/games', methods=['PUT'])
 @token_required
-# example of a good request: http://127.0.0.1:5000/games?name=fac19&username=ivo
+# example of a good request: http://127.0.0.1:5000/games?gamename=fac19
 def route_games_put(current_user):
     game_name = request.args.get('gamename')
     if game_name:
-        user = request.args.get('username')
+        user = current_user["username"]
         if user:
             player_dict = player_factory(user)
             models.add_user_to_game(game_name=game_name, user=player_dict)
