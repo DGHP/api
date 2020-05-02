@@ -32,6 +32,11 @@ Routes requiring auth use a JWT provided using the Bearer standard in the author
 
 ---
 
+### API endpoints
+Every API endpoint starts with following URL - `https://api-citadels.herokuapp.com`
+
+!!! NOT all the orutes are tested yet so might not work !!!
+
 ### /users
 
 ##### GET /users
