@@ -25,7 +25,7 @@ flask run
 ```
 
 ## Routes we've written
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/b1eb2c696f82a68fe3af)  
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/5ccd582eaacd66f56982)
 (02/05/20)
 
 Routes requiring auth use a JWT provided using the Bearer standard in the authorization header. JWTs can be obtained by creating a user or logging in. 
