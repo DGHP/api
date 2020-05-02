@@ -25,7 +25,7 @@ flask run
 ```
 
 ## Routes we've written
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/5ccd582eaacd66f56982)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://www.getpostman.com/collections/5ccd582eaacd66f56982)
 (02/05/20)
 
 Routes requiring auth use a JWT provided using the Bearer standard in the authorization header. JWTs can be obtained by creating a user or logging in. 
@@ -47,7 +47,7 @@ Example response body:
         "_id": {
             "$oid": "5eac339e2d329d400ccd0f24"
         },
-        "name": "George",
+        "username": "George",
         "email": "g@g.com",
         "password": "pbkdf2:sha256:150000$reMXUvhC$50b9651e8b8cf2a2de62c422efd5b1a1cf3de28b07767045f9530ea41205bed4"
     }
@@ -62,7 +62,7 @@ Adds user to the system and logs them in, returning a JWT as a string in the res
 Example request body:
 ```
 {
-    "name": "Ivo",
+    "username": "Ivo",
     "password": "password"
 }
 ```
@@ -85,7 +85,7 @@ Returns a JWT, in string form. Credentials should be provided in the body.
 Example request body:
 ```
 {
-    "name": "Ivo",
+    "username": "Ivo",
     "password": "password"
 }
 ```
@@ -111,7 +111,7 @@ Example response body:
         "_id": {
             "$oid": "5ead438bcc7eac60028f857b"
         },
-        "name": "fac19",
+        "gameName": "fac19",
         "playerCount": 8,
         "mode": "original",
         "characterDeck": [],
