@@ -1,8 +1,11 @@
+import os
+
 from flask import Flask
 from flask_cors import CORS
 from pymongo import MongoClient
 
-client = MongoClient()
+# on heroku there is variable setted up with MONGO_URI key and db url as a value
+client = MongoClient(os.environ.get('MONGO_URI'))
 app = Flask(__name__)
 CORS(app)
 db = client.dev_database
