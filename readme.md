@@ -3,20 +3,20 @@ Written in Python 3 with MongoDB, both of which need to be installed if they are
 
 ## Local deployment
 
-Setup is pretty standard for a python/mongo project
+Setup is pretty standard for a python/mongo project. On Ubuntu, follow this set of commands:
 
 ```
 git clone https://github.com/DGHP/api.git
 cd api
 sudo systemctl start mongod
-sudo systemctl status mongod (you want to see a green arrow)
+sudo systemctl status mongod (you want to see a green circle - press q to exit)
 python3 -m venv venv
 source venv/activate/bin
 pip3 install -r requirements.txt
 touch .flaskenv
 ```
 
-Edit .flaskenv with editor of choice. 
+Edit .flaskenv with editor of choice. (Note that this is for the future - currently the flaskenv that already exists is fine)
 
 Finally,
 
@@ -24,15 +24,155 @@ Finally,
 flask run
 ```
 
-## API Documentation
+## Routes we've written
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://www.getpostman.com/collections/5ccd582eaacd66f56982)
+(02/05/20)
 
-our API has several endpoints. 
-
-`GET` - `/users`
-
-> get all users from db. No authorisation needed.
+Routes requiring auth use a JWT provided using the Bearer standard in the authorization header. JWTs can be obtained by creating a user or logging in. 
 
 ---
+
+### /users
+
+##### GET /users
+Auth required: no
+
+Gets list of all users. Probably just a development route. Returns json as body. No body required for request.
+
+Example response body:
+
+```
+[
+    {
+        "_id": {
+            "$oid": "5eac339e2d329d400ccd0f24"
+        },
+        "username": "George",
+        "email": "g@g.com",
+        "password": "pbkdf2:sha256:150000$reMXUvhC$50b9651e8b8cf2a2de62c422efd5b1a1cf3de28b07767045f9530ea41205bed4"
+    }
+]
+```
+
+#### POST /users
+Auth required: no
+
+Adds user to the system and logs them in, returning a JWT as a string in the response body.
+
+Example request body:
+```
+{
+    "username": "Ivo",
+    "password": "password"
+}
+```
+
+Example response body:
+
+```
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ikl2byIsImlhdCI6MTU4ODQyMzQ3NSwiZXhwIjoxNTg5MDI4Mjc1fQ.xx6Toj-R_H4M0oulywByLs4uvYJVGDwtrTpy9fb7c14
+```
+
+---
+
+### /login
+
+#### POST /login
+Auth required: no
+
+Returns a JWT, in string form. Credentials should be provided in the body.
+
+Example request body:
+```
+{
+    "username": "Ivo",
+    "password": "password"
+}
+```
+
+Example response body:
+```
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ikl2byIsImlhdCI6MTU4ODQyMzQ3NSwiZXhwIjoxNTg5MDI4Mjc1fQ.xx6Toj-R_H4M0oulywByLs4uvYJVGDwtrTpy9fb7c14
+```
+
+---
+
+### /games
+
+#### GET /games
+Auth required: no
+
+Gets all games, returned as array in body.
+
+Example response body:
+```
+[
+    {
+        "_id": {
+            "$oid": "5ead438bcc7eac60028f857b"
+        },
+        "gameName": "fac19",
+        "playerCount": 8,
+        "mode": "original",
+        "characterDeck": [],
+        "districtDeck": [],
+        "turn": 0,
+        "stage": "character-selection",
+        "players": [
+            {
+                "Monkey": {
+                    "districtsInHand": [],
+                    "goldCount": 0,
+                    "districtsBuilt": [],
+                    "characterRole": "",
+                    "totalPoints": 0
+                }
+            }
+        ]
+    }
+]
+```
+
+
+#### POST /games
+Auth required: yes
+
+Creates a new game
+
+Example request body:
+```
+{
+	"name": "fac19",
+	"playerCount": 8,
+	"mode": "original",
+	"playerUsernames": ["Monkey"]
+}
+```
+
+```
+new game created
+```
+
+#### PUT /games/name=\<game name\>&username=\<username\>
+Auth required: yes
+
+Adds specified user to game
+
+No body required
+
+This route is likely to change soon
+
+Example url:
+```
+http://127.0.0.1:5000/games?name=fac19&username=ivo
+```
+
+---
+
+## Routes we might write
+
+
+
 
 `GET` - `/districts`
 > Get all the dsitricts. No authorisation needed.
@@ -80,70 +220,7 @@ our API has several endpoints.
 ]
 ```
 
----
 
-`POST` - `/users`
-
-> create a new user in the database. No authorisation needed. It returns a token as a response that contains information about the username. body:
-
-```json
-{
-	username: "monkey",
-	email: "mon@mon.com",
-	password: "123"
-}
-```
-
----
-
-`POST` - `/login`
-
-> login to your account. the response contains a JWT. body:
-
-```json
-{
-	username: "monkey",
-	password: "123"
-}
-```
-
----
-
-`POST` - `/games`
-
-> Create a new game. Authentication needed. body:
-
-```json
-{
-	name: "fac19",
-	playerCount: "8",
-	mode: "original",
-	playerUsernames: ["monkey"]
-}
-```
-
-This request sends a response:
-
-```json
-{
-	name: "fac19",
-	playerCount: "8",
-	mode: "original",
-	playerUsernames: [
-		{monkey: {
-			districtsInHand: ["trade mill", "castle", "museum", "statue"],
-			goldCount: 2,
-			districtsBuilt: [],
-			characterRole: "",
-			totalPoints: 0
-		}}
-	]
-}
-```
-
-`PUT` - `/games?name=fac19&username=ivo`
-
-> join the game named fac19 after getting the link from game creator. Authorisation needed. No response body requred. The playerUsernames will automatically get updated.
 ---
 
 `GET` - `/games/fac19`
