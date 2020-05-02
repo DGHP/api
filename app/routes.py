@@ -54,6 +54,8 @@ def create_game(current_user):
                             'playerCount', 'mode', 'playerUsernames')
     if not game:
         return make_response("Your request body must contain gameName, playerCount, mode and playerUsernames fields", 400)
+    if models.get_game(game['gameName']):
+        return make_response("A game with this name already exists", 401)
     body = request.get_json()
     game = new_game_factory(game_name=body['gameName'], player_count=body['playerCount'],
                             mode=body['mode'], first_player=current_user['username'])
@@ -81,3 +83,11 @@ def route_games_put(current_user):
             return make_response("User added", 200)
         return make_response("Could not find username", 400)
     return make_response("could not find game name field", 400)
+# could add guard clause for this: 
+# if not(game_name and current_user): # current_user not user because trying to do lookup on None throws error
+#   return with 400
+# elif models.already_playing(game_name, current_user[username]):
+#   return with 401
+#  400
+# else:
+#   do good database stuff

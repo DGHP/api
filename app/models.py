@@ -1,7 +1,7 @@
 from app import db
 
 users = db.users
-users.drop()
+# users.drop()
 
 games = db.games
 # games.drop()
@@ -22,6 +22,8 @@ def add_user(user):
 def get_user(username):
     return users.find_one({'username': username})
 
+def get_game(game_name):
+    return games.find_one({'gameName': game_name})
 
 def create_game(game):
     games.insert_one(game)
