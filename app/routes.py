@@ -3,7 +3,7 @@ from flask import request
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app.helpers import token_required, make_jwt
-from app import models # camelcase bad
+from app import models
 from app.factories.newgame import new_game_factory
 from app.factories.player import player_factory
 from app import app
@@ -19,7 +19,7 @@ def add_user():
     user_dictionary['password'] = generate_password_hash(
         user_dictionary['password'])
     models.add_user(user_dictionary)
-    username = user_dictionary['username']
+    username = user_dictionary['name']
     return make_jwt(username)
 
 
