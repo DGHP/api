@@ -1,7 +1,7 @@
 def player_factory(name):
     return {name: {
         'districtsInHand': [],
-        'goldCount': 0,
+        'goldCount': 2,
         'districtsBuilt': [],
         'characterRole': '',
         'totalPoints': 0
