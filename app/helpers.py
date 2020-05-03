@@ -40,3 +40,11 @@ def make_jwt(username):
                         'exp': week_later}, jwt_secret, algorithm="HS256")
     return token
 
+def validate_message(dictionary, *args):
+    clean_input = {}
+    for argument in args:
+      try:
+        clean_input[argument] = dictionary[argument]
+      except:
+        return False
+    return clean_input
